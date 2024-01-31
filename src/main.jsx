@@ -4,9 +4,11 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import "./index.css";
 import Layout from "./layout/Layout.jsx";
+import AllTasks from "./pages/AllTasks.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import TaskDetails from "./pages/TaskDetails.jsx";
 import AuthProvider from "./providers/AuthProvider.jsx";
 const router = createBrowserRouter([
   {
@@ -21,6 +23,14 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/AllTasks",
+        element: <AllTasks />,
+      },
+      {
+        path: "/task/:id",
+        element: <TaskDetails />,
       },
       {
         path: "/register",
