@@ -1,10 +1,12 @@
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useState } from "react";
+import { updateProfile } from "firebase/auth";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import auth from "../firebase/firebase.init";
+import logo from "../assets/logo.jpg";
+import { AuthContext } from "../providers/AuthProvider";
 
 export default function Register() {
   const [error, setError] = useState("");
+  const { createUser, withGoogle } = useContext(AuthContext);
 
   const handleLoginWithEmailPassword = (event) => {
     event.preventDefault();
@@ -12,10 +14,8 @@ export default function Register() {
     const password = event.target.password.value;
     const userName = event.target.userName.value;
 
-    console.log(email, password);
-    createUserWithEmailAndPassword(auth, email, password)
+    createUser(email, password)
       .then((result) => {
-        // Signed up
         const loggedUser = result.user;
         console.log(loggedUser);
         setError("");
@@ -25,7 +25,6 @@ export default function Register() {
       .catch((error) => {
         console.log(error.message);
         setError(error.message);
-        // ..
       });
   };
   const updateUserData = (user, userName) => {
@@ -37,15 +36,23 @@ export default function Register() {
         setError(error.message);
       });
   };
+
+  const handleGoogleSignIn = () => {
+    withGoogle()
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log("error", error.message);
+        setError(error.message);
+      });
+  };
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
+          <img className="mx-auto h-10 w-auto" src={logo} alt="Task Tracker" />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign Up to Task Tracker
           </h2>
@@ -130,6 +137,22 @@ export default function Register() {
               Login Account
             </Link>
           </p>
+
+          <div className="flex mt-5 mb-5 items-center justify-center">
+            <hr className="flex-grow bg-black h-1" />
+            <p className="mx-4">or continue with</p>
+            <hr className="flex-grow bg-black h-1" />
+          </div>
+
+          <div>
+            {" "}
+            <button
+              onClick={handleGoogleSignIn}
+              className="flex w-full justify-center rounded-md bg-slate-200 px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Google
+            </button>
+          </div>
         </div>
       </div>
     </>

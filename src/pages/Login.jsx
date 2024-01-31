@@ -1,29 +1,17 @@
-import {
-  GoogleAuthProvider,
-  getAuth,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.jpg";
-import auth from "../firebase/firebase.init";
+import { AuthContext } from "../providers/AuthProvider";
 
 export default function Login() {
-  const newAuth = getAuth();
-  const [user, setUser] = useState(null);
-  const provider = new GoogleAuthProvider();
-  const currentUser = newAuth.currentUser;
+  const { signIn, withGoogle } = useContext(AuthContext);
   const [error, setError] = useState("");
 
-  console.log(currentUser);
-
   const handleGoogleSignIn = () => {
-    signInWithPopup(auth, provider)
+    withGoogle()
       .then((result) => {
         const user = result.user;
         console.log(user);
-        setUser(user);
       })
       .catch((error) => {
         console.log("error", error.message);
@@ -36,17 +24,16 @@ export default function Login() {
     const email = event.target.email.value;
     const password = event.target.password.value;
 
-    signInWithEmailAndPassword(auth, email, password)
+    signIn(email, password)
       .then((result) => {
-        // Signed up
-        const user = result.user;
+        const loggedInUser = result.user;
+        console.log(loggedInUser);
         setError("");
         event.target.reset();
       })
       .catch((error) => {
         console.log(error.message);
         setError(error.message);
-        // ..
       });
   };
   return (
@@ -121,10 +108,11 @@ export default function Login() {
               Create Account
             </Link>
           </p>
+
           <div className="flex mt-5 mb-5 items-center justify-center">
-            <hr className="bg-black h-1 w-3/4" />
-            <p className="inline-block">Or continue with</p>
-            <hr className="bg-black h-1 w-3/4" />
+            <hr className="flex-grow bg-black h-1" />
+            <p className="mx-4">or continue with</p>
+            <hr className="flex-grow bg-black h-1" />
           </div>
 
           <div>
