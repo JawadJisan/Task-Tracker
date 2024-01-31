@@ -7,6 +7,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Loading from "../components/Loading";
 
 export default function AllTasks() {
   const [tasks, setTasks] = useState([]);
@@ -32,7 +33,7 @@ export default function AllTasks() {
   };
 
   if (loading) {
-    return <p>Loading..</p>;
+    return <Loading />;
   }
 
   return (

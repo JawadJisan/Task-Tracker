@@ -11,6 +11,7 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import TaskDetails from "./pages/TaskDetails.jsx";
 import AuthProvider from "./providers/AuthProvider.jsx";
+import PrivateRoute from "./utils/PrivateRoute.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,7 +28,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/AllTasks",
-        element: <AllTasks />,
+        element: (
+          <PrivateRoute>
+            <AllTasks />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/AddTask",

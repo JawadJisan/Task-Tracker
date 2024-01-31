@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Loading from "./components/Loading";
 
 export default function App() {
   const [tasks, setTasks] = useState([]);
@@ -27,7 +28,7 @@ export default function App() {
   };
 
   if (loading) {
-    return <p>Loading..</p>;
+    return <Loading />;
   }
 
   return (
