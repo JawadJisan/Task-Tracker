@@ -31,16 +31,25 @@ export default function App() {
   }
 
   return (
-    <div className="bg-white py-24 sm:py-32">
+    <div className="bg-white wrapper py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto text-center max-w-2xl lg:mx-0">
+        <div className="mx-auto text-center  lg:mx-0">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Recent Added Tracking Task
           </h2>
-          <p className="mt-2 text-lg  text-gray-600">
+          <p className="mt-2 text-lg mb-3 text-gray-600">
             you can update and delete your assigned tasks
           </p>
+
+          <Link
+            to="/AddTask"
+            className="bg-gray-900 w-full text-white rounded-md 
+              px-20 py-2 text-sm font-medium"
+          >
+            Add Task
+          </Link>
         </div>
+
         <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {tasks.map((post) => (
             <article
@@ -87,6 +96,15 @@ export default function App() {
               </div>
             </article>
           ))}
+        </div>
+        <div className="flex mt-10 justify-end">
+          <Link
+            to="/AllTasks"
+            className="bg-gray-900 text-white rounded-md 
+          px-20 py-2 text-sm font-medium"
+          >
+            Track All Tasks
+          </Link>
         </div>
       </div>
     </div>

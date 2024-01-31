@@ -4,6 +4,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import "./index.css";
 import Layout from "./layout/Layout.jsx";
+import AddTask from "./pages/AddTask.jsx";
 import AllTasks from "./pages/AllTasks.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import Login from "./pages/Login.jsx";
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "/AllTasks",
         element: <AllTasks />,
+      },
+      {
+        path: "/AddTask",
+        element: <AddTask />,
       },
       {
         path: "/task/:id",
