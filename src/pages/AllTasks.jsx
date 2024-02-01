@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import {
-  faEdit,
-  faInfoCircle,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import toast from "react-hot-toast";
 import Loading from "../components/Loading";
 
 export default function AllTasks() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   console.log(tasks);
 
@@ -30,6 +28,48 @@ export default function AllTasks() {
       setError("Error fetching tasks");
       setLoading(false);
     }
+  };
+
+  const handleEditNavigate = (post) => {
+    navigate(`/task/${post._id}`);
+  };
+
+  const deleteTask = async (post) => {
+    try {
+      setLoading(true);
+      await fetch(`http://localhost:5000/task/${post._id}`, {
+        method: "DELETE",
+      });
+      setLoading(false);
+      toast.success("Task Deleted Successfully");
+      navigate("/AllTasks");
+    } catch (error) {
+      setLoading(true);
+      setError("Error fetching tasks");
+      setLoading(false);
+      toast.error("coudnt delete the task");
+    }
+  };
+
+  const handleDelete = async (post) => {
+    toast((t) => (
+      <span>
+        Delete Taks
+        <button
+          className="bg-red-300 px-3 py-2 mx-2 rounded-xl"
+          onClick={() => {
+            try {
+              deleteTask(post);
+              toast.dismiss(t.id);
+            } catch (error) {
+              toast.dismiss(t.id);
+            }
+          }}
+        >
+          Delete
+        </button>
+      </span>
+    ));
   };
 
   if (loading) {
@@ -102,18 +142,18 @@ export default function AllTasks() {
                 </div>
               </div>
               <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <FontAwesomeIcon
-                  icon={faInfoCircle}
-                  className="text-blue-500 mr-2 cursor-pointer"
-                />
-                <FontAwesomeIcon
-                  icon={faEdit}
-                  className="text-green-500 mr-2 cursor-pointer"
-                />
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  className="text-red-500 cursor-pointer"
-                />
+                <button onClick={() => handleEditNavigate(post)}>
+                  <FontAwesomeIcon
+                    icon={faEdit}
+                    className="text-green-500 mr-2 cursor-pointer"
+                  />
+                </button>
+                <button onClick={() => handleDelete(post)}>
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className="text-red-500 cursor-pointer"
+                  />
+                </button>
               </div>
             </article>
           ))}
