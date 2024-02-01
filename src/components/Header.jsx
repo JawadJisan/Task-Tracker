@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Fragment, useContext } from "react";
@@ -17,8 +18,6 @@ function classNames(...classes) {
 
 export default function Example() {
   const { user, logOut } = useContext(AuthContext);
-
-  console.log(user, "current User from Header");
 
   const handleLogout = () => {
     logOut()

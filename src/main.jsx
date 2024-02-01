@@ -36,7 +36,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/AddTask",
-        element: <AddTask />,
+        element: (
+          <PrivateRoute>
+            <AddTask />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/task/:id",

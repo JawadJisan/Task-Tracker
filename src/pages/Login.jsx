@@ -1,17 +1,19 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.jpg";
 import { AuthContext } from "../providers/AuthProvider";
 
 export default function Login() {
   const { signIn, withGoogle } = useContext(AuthContext);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleGoogleSignIn = () => {
     withGoogle()
       .then((result) => {
         const user = result.user;
         console.log(user);
+        navigate("/");
       })
       .catch((error) => {
         console.log("error", error.message);
@@ -30,6 +32,7 @@ export default function Login() {
         console.log(loggedInUser);
         setError("");
         event.target.reset();
+        navigate("/");
       })
       .catch((error) => {
         console.log(error.message);

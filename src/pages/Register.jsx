@@ -1,12 +1,13 @@
 import { updateProfile } from "firebase/auth";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.jpg";
 import { AuthContext } from "../providers/AuthProvider";
 
 export default function Register() {
   const [error, setError] = useState("");
   const { createUser, withGoogle } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLoginWithEmailPassword = (event) => {
     event.preventDefault();
@@ -21,6 +22,7 @@ export default function Register() {
         setError("");
         event.target.reset();
         updateUserData(result.user, userName);
+        navigate("/");
       })
       .catch((error) => {
         console.log(error.message);
@@ -42,6 +44,7 @@ export default function Register() {
       .then((result) => {
         const user = result.user;
         console.log(user);
+        navigate("/");
       })
       .catch((error) => {
         console.log("error", error.message);
