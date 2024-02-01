@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import taskIMG from "../assets/task.jpg";
 
@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/20/solid";
 
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import EditForm from "../components/EditForm";
 import Loading from "../components/Loading";
 
@@ -19,8 +20,7 @@ export default function TaskDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-
-  console.log(task);
+  const navigate = useNavigate();
 
   const gettasks = async () => {
     try {
@@ -40,6 +40,44 @@ export default function TaskDetails() {
 
   const handleEditClick = () => {
     setIsEditing(true);
+  };
+
+  const deleteTask = async () => {
+    try {
+      setLoading(true);
+      await fetch(`http://localhost:5000/task/${id}`, {
+        method: "DELETE",
+      });
+      setLoading(false);
+      toast.success("Task Deleted Successfully");
+      navigate("/AllTasks");
+    } catch (error) {
+      setLoading(true);
+      setError("Error fetching tasks");
+      setLoading(false);
+      toast.error("coudnt delete the task");
+    }
+  };
+
+  const handleDelete = async () => {
+    toast((t) => (
+      <span>
+        Delete Taks
+        <button
+          className="bg-red-300 px-3 py-2 mx-2 rounded-xl"
+          onClick={() => {
+            try {
+              deleteTask();
+              toast.dismiss(t.id);
+            } catch (error) {
+              toast.dismiss(t.id);
+            }
+          }}
+        >
+          Delete
+        </button>
+      </span>
+    ));
   };
 
   if (loading) {
@@ -111,7 +149,7 @@ export default function TaskDetails() {
                   </p>
                 </button>
                 <button
-                  onClick={() => console.log("Delete clicked")}
+                  onClick={handleDelete}
                   className="bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded-full transition-all duration-300 transform scale-100 hover:scale-110"
                 >
                   <p className="flex gap-x-3">
