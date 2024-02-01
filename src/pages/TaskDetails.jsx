@@ -24,7 +24,9 @@ export default function TaskDetails() {
 
   const gettasks = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/task/${id}`);
+      const response = await fetch(
+        `https://task-tracker-server-psi.vercel.app/task/${id}`
+      );
       const data = await response.json();
       setTask(data.data);
       setLoading(false);
@@ -45,7 +47,7 @@ export default function TaskDetails() {
   const deleteTask = async () => {
     try {
       setLoading(true);
-      await fetch(`http://localhost:5000/task/${id}`, {
+      await fetch(`https://task-tracker-server-psi.vercel.app/task/${id}`, {
         method: "DELETE",
       });
       setLoading(false);

@@ -15,7 +15,9 @@ export default function App() {
 
   const gettasks = async () => {
     try {
-      const response = await fetch("http://localhost:5000/tasks");
+      const response = await fetch(
+        "https://task-tracker-server-psi.vercel.app/tasks"
+      );
       const data = await response.json();
       const sortTasks = data.data.sort((a, b) => b.timestamp - a.timestamp);
       const recentTasks = sortTasks.slice(0, 6);

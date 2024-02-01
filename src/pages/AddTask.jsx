@@ -54,13 +54,16 @@ export default function AddTask() {
       };
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:5000/task", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedFormData),
-        });
+        const response = await fetch(
+          "https://task-tracker-server-psi.vercel.app/task",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedFormData),
+          }
+        );
         console.log(response);
         // Reset the form on successful submission
         setFormData(initialFormData);

@@ -21,7 +21,9 @@ export default function AllTasks() {
   useEffect(() => {
     const gettasks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/tasks");
+        const response = await fetch(
+          "https://task-tracker-server-psi.vercel.app/tasks"
+        );
         const data = await response.json();
         setTasks(data.data);
         setLoading(false);
@@ -40,9 +42,12 @@ export default function AllTasks() {
   const deleteTask = async (post) => {
     try {
       setLoading(true);
-      await fetch(`http://localhost:5000/task/${post._id}`, {
-        method: "DELETE",
-      });
+      await fetch(
+        `https://task-tracker-server-psi.vercel.app/task/${post._id}`,
+        {
+          method: "DELETE",
+        }
+      );
       setLoading(false);
       toast.success("Task Deleted Successfully");
       navigate("/AllTasks");

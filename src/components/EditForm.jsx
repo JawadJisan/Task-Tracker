@@ -31,13 +31,16 @@ export default function EditForm({ task, setIsEditing, id }) {
     console.log(formData, "edit");
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:5000/task/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `https://task-tracker-server-psi.vercel.app/task/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       setLoading(false);
       toast.success("Task  updated!");
       setIsEditing(false);
