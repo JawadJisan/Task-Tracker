@@ -1,4 +1,6 @@
 import { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import Loading from "../components/Loading";
 import { AuthContext } from "../providers/AuthProvider";
 
 export default function AddTask() {
@@ -15,6 +17,8 @@ export default function AddTask() {
   const [formData, setFormData] = useState(initialFormData);
   const [formErrors, setFormErrors] = useState({});
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -27,20 +31,17 @@ export default function AddTask() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const errors = {};
     if (!formData.title) {
-      errors.title = "Title is required";
+      errors.title = "This Field is required";
     }
 
     setFormErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      // Form submission logic (you can replace this with your actual API call or state update logic)
-      console.log("Form Data:", formData);
-
       const updatedFormData = {
         ...formData,
         author: {
@@ -50,12 +51,28 @@ export default function AddTask() {
           role: "user",
         },
       };
-
       console.log("updatedFormData Data:", updatedFormData);
-
-      // Reset the form on successful submission
-      setFormData(initialFormData);
-      setIsFormSubmitted(true);
+      try {
+        setLoading(true);
+        const response = await fetch("http://localhost:5000/task", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedFormData),
+        });
+        console.log(response);
+        // Reset the form on successful submission
+        setFormData(initialFormData);
+        setIsFormSubmitted(true);
+        setLoading(false);
+        toast.success("Task Added Successfully");
+      } catch (error) {
+        setLoading(true);
+        setError(error.message);
+        setLoading(false);
+        toast.error("Task Didnt Added");
+      }
     }
   };
 
@@ -71,6 +88,11 @@ export default function AddTask() {
       return () => clearTimeout(resetForm);
     }
   }, [isFormSubmitted]);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <form className="wrapper" onSubmit={handleSubmit}>
       <div className="space-y-12">
