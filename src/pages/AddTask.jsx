@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
 import { AuthContext } from "../providers/AuthProvider";
 
 export default function AddTask() {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const initialFormData = {
     title: "",
@@ -65,6 +67,7 @@ export default function AddTask() {
         setIsFormSubmitted(true);
         setLoading(false);
         toast.success("Task Added Successfully");
+        navigate("/allTasks");
       } catch (error) {
         setLoading(true);
         setError(error.message);
@@ -219,6 +222,7 @@ export default function AddTask() {
               </label>
               <div className="mt-2">
                 <select
+                  disabled
                   value={formData.completed}
                   onChange={handleChange}
                   rows={3}
