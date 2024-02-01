@@ -20,7 +20,7 @@ export default function TaskDetails() {
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  // console.log(task);
+  console.log(task);
 
   const gettasks = async () => {
     try {
@@ -40,10 +40,6 @@ export default function TaskDetails() {
 
   const handleEditClick = () => {
     setIsEditing(true);
-  };
-
-  const handleCancelEdit = () => {
-    setIsEditing(false);
   };
 
   if (loading) {
@@ -145,7 +141,7 @@ export default function TaskDetails() {
         <div className="-ml-12 -mt-12 p-12 lg:sticky lg:top-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden">
           {/* <EditForm /> */}
           {isEditing ? (
-            <EditForm />
+            <EditForm task={task} setIsEditing={setIsEditing} id={id} />
           ) : (
             <div className="relative">
               <img

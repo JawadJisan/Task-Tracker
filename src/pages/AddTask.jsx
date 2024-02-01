@@ -6,12 +6,11 @@ import { AuthContext } from "../providers/AuthProvider";
 export default function AddTask() {
   const { user } = useContext(AuthContext);
 
-  console.log(user);
   const initialFormData = {
     title: "",
     description: "",
     priority: "Medium",
-    compleated: "False",
+    completed: "False",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -51,7 +50,6 @@ export default function AddTask() {
           role: "user",
         },
       };
-      console.log("updatedFormData Data:", updatedFormData);
       try {
         setLoading(true);
         const response = await fetch("http://localhost:5000/task", {
@@ -214,19 +212,19 @@ export default function AddTask() {
             </div>
             <div className="sm:col-span-3">
               <label
-                htmlFor="compleated"
+                htmlFor="completed"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Compleated
+                Completed
               </label>
               <div className="mt-2">
                 <select
-                  value={formData.compleated}
+                  value={formData.completed}
                   onChange={handleChange}
                   rows={3}
-                  id="compleated"
-                  name="compleated"
-                  autoComplete="compleated"
+                  id="completed"
+                  name="completed"
+                  autoComplete="completed"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                 >
                   <option>False</option>

@@ -1,11 +1,56 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { useState } from "react";
+import toast from "react-hot-toast";
+import Loading from "./Loading";
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+export default function EditForm({ task, setIsEditing, id }) {
+  const initialFormData = {
+    title: task.title,
+    description: task.description,
+    priority: task.priority,
+    completed: task.completed,
+  };
 
-export default function EditForm() {
-  const [agreed, setAgreed] = useState(false);
+  const [formData, setFormData] = useState(initialFormData);
+  const [formErrors, setFormErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+    setFormErrors({
+      ...formErrors,
+      [e.target.name]: "",
+    });
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    console.log(formData, "edit");
+    try {
+      setLoading(true);
+      const response = await fetch(`http://localhost:5000/task/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      setLoading(false);
+      toast.success("Task  updated!");
+      setIsEditing(false);
+    } catch (error) {
+      setLoading(true);
+      toast.error("Task Didnt Added");
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
@@ -30,7 +75,7 @@ export default function EditForm() {
           here.
         </p>
       </div>
-      <form className="mx-auto mt-16 max-w-xl sm:mt-20">
+      <form onSubmit={handleUpdate} className="mx-auto mt-16 max-w-xl sm:mt-20">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div className="sm:col-span-2">
             <label
@@ -41,6 +86,8 @@ export default function EditForm() {
             </label>
             <div className="mt-2.5">
               <input
+                value={formData.title}
+                onChange={handleChange}
                 type="text"
                 name="title"
                 id="title"
@@ -59,6 +106,8 @@ export default function EditForm() {
             </label>
             <div className="mt-2.5">
               <textarea
+                value={formData.description}
+                onChange={handleChange}
                 name="description"
                 id="description"
                 rows={4}
@@ -66,28 +115,7 @@ export default function EditForm() {
               />
             </div>
           </div>
-          <div>
-            <label
-              htmlFor="compleated"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Compleated
-            </label>
-            <div className="mt-2">
-              <select
-                // value={formData.compleated}
-                // onChange={handleChange}
 
-                id="compleated"
-                name="compleated"
-                autoComplete="compleated"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-              >
-                <option>False</option>
-                <option>True</option>
-              </select>
-            </div>
-          </div>
           <div>
             <label
               htmlFor="priority"
@@ -98,8 +126,8 @@ export default function EditForm() {
             <div className="mt-2">
               <select
                 id="priority"
-                //   value={formData.priority}
-                //   onChange={handleChange}
+                value={formData.priority}
+                onChange={handleChange}
                 name="priority"
                 autoComplete="priority"
                 className="block w-full rounded-md border-0
@@ -108,6 +136,28 @@ export default function EditForm() {
                 <option>Medium</option>
                 <option>High</option>
                 <option>Low</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label
+              htmlFor="completed"
+              className="block text-sm font-semibold leading-6 text-gray-900"
+            >
+              Completed
+            </label>
+            <div className="mt-2">
+              <select
+                id="completed"
+                value={formData.completed}
+                onChange={handleChange}
+                name="completed"
+                autoComplete="completed"
+                className="block w-full rounded-md border-0
+                px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+              >
+                <option>False</option>
+                <option>True</option>
               </select>
             </div>
           </div>
